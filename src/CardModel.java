@@ -10,6 +10,7 @@ public class CardModel {
 	    SINGLELINE(1), PAIRLINE(2), TRIPPLELINE(3), TRIPPLE1SINGLELINE(4), TRIPPLE1PAIRLINE(5),  TOPBOMB(2); 
 		               
 		private int value = 0;
+		
 		private Type(int value)
 		{
 			this.value = value;
@@ -41,19 +42,19 @@ public class CardModel {
 	}
 	
 	public Card getModelName() {
-		return name;
+		return this.name;
 	}
 	
 	public int getCardCount() {
-		return cardCount;
+		return this.cardCount;
 	}
 	
 	public int getLength() {
-		return length;
+		return this.length;
 	}
 
 	public Type getType() {
-		return type;
+		return this.type;
 	}
 	
 	public void setType(Type type)

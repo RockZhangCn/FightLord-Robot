@@ -216,49 +216,57 @@ public class Player {
 
 		int repeatCount = 1;
 		
-		for(int i = 0;  i < cards.size() && getCardIndex(i) <= 14 ; i++) // cards[7]
+		int i = 0;
+		
+		for( i = 0;  i < cards.size() ; i++) // cards[7]
 		{
 			curCard = getCardIndex(i);
 			if(curCard == cardLineIndex)
 			{
-				currentLinelen++;
+				if(curCard <= 14)
+				{
+					currentLinelen++;
+				}
 				cardLineIndex++;
-				repeatCount = 1;
-			}
-
-			else if(curCard < cardLineIndex )
-			{
-				repeatCount++;
-				
+				//Before repeatCount is set to default value.
 				switch(repeatCount)
 				{
 					case 2:
 						List<Card> temp2 = new ArrayList<Card>();
-						temp2.add(cards.get(i));
 						temp2.add(cards.get(i-1));
+						temp2.add(cards.get(i-2));
 						cardModel.add(new CardModel(CardModel.Type.PAIR, temp2));
 						break;
 					
 					case 3:
 						List<Card> temp3 = new ArrayList<Card>();
-						temp3.add(cards.get(i));
 						temp3.add(cards.get(i-1));
 						temp3.add(cards.get(i-2));
+						temp3.add(cards.get(i-3));
 						cardModel.add(new CardModel(CardModel.Type.TRIPPLE, temp3));
+						
 						break;
 					
 					case 4:
 						List<Card> temp4 = new ArrayList<Card>();
-						temp4.add(cards.get(i));
 						temp4.add(cards.get(i-1));
 						temp4.add(cards.get(i-2));
 						temp4.add(cards.get(i-3));
+						temp4.add(cards.get(i-4));
+
 						cardModel.add(new CardModel(CardModel.Type.FOURBOMB, temp4));
 						break;
 					default:
 						//Error here.
 			
-				}		
+				}	
+				repeatCount = 1;
+			}
+			else if(curCard < cardLineIndex )
+			{
+				repeatCount++;
+				
+				
 				//System.out.println("We have " + repeatCount + " count " + cards.get(i));
 			}
 			else if(curCard > cardLineIndex)
@@ -279,9 +287,73 @@ public class Player {
 				realStart = curCard;
 				cardLineIndex = realStart + 1;
 				currentLinelen = 1;
+				
+				switch(repeatCount)
+				{
+					case 2:
+						List<Card> temp2 = new ArrayList<Card>();
+						temp2.add(cards.get(i-1));
+						temp2.add(cards.get(i-2));
+						cardModel.add(new CardModel(CardModel.Type.PAIR, temp2));
+						break;
+					
+					case 3:
+						List<Card> temp3 = new ArrayList<Card>();
+						temp3.add(cards.get(i-1));
+						temp3.add(cards.get(i-2));
+						temp3.add(cards.get(i-3));
+						cardModel.add(new CardModel(CardModel.Type.TRIPPLE, temp3));
+
+						break;
+					
+					case 4:
+						List<Card> temp4 = new ArrayList<Card>();
+						temp4.add(cards.get(i-1));
+						temp4.add(cards.get(i-2));
+						temp4.add(cards.get(i-3));
+						temp4.add(cards.get(i-4));
+
+						cardModel.add(new CardModel(CardModel.Type.FOURBOMB, temp4));
+						break;
+					default:
+						//Error here.
+			
+				}		
 				repeatCount = 1;
 			}
 		}
+		
+		switch(repeatCount)
+		{
+			case 2:
+				List<Card> temp2 = new ArrayList<Card>();
+				temp2.add(cards.get(i-1));
+				temp2.add(cards.get(i-2));
+				cardModel.add(new CardModel(CardModel.Type.PAIR, temp2));
+				break;
+			
+			case 3:
+				List<Card> temp3 = new ArrayList<Card>();
+				temp3.add(cards.get(i-1));
+				temp3.add(cards.get(i-2));
+				temp3.add(cards.get(i-3));
+				cardModel.add(new CardModel(CardModel.Type.TRIPPLE, temp3));
+
+				break;
+			
+			case 4:
+				List<Card> temp4 = new ArrayList<Card>();
+				temp4.add(cards.get(i-1));
+				temp4.add(cards.get(i-2));
+				temp4.add(cards.get(i-3));
+				temp4.add(cards.get(i-4));
+
+				cardModel.add(new CardModel(CardModel.Type.FOURBOMB, temp4));
+				break;
+			default:
+				//Error here.
+	
+		}	
 
 		if(currentLinelen >= 5)
 		{
@@ -295,6 +367,7 @@ public class Player {
 			}
 			System.out.println("");
 		}
+		
 		return currself;
 	}
 }
