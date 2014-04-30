@@ -17,16 +17,21 @@ public class Player {
 	
 	private List<Card> alreadyKnownCards = new ArrayList<Card>(); //
 	
-	/*
+	private List<CardModel> cardModel = new ArrayList<CardModel>();
+	
 	private List<Card> singleCard = new ArrayList<Card>();  //     
-	private List<Card> pairCard = new ArrayList<Card>();   //  
-	private List<Card> trippleOne = new ArrayList<Card>();//
-	private List<Card> trippleTwo = new ArrayList<Card>(); //
-	private List<Card> fourAttacheTwoSingle = new ArrayList<Card>(); //
-	private List<Card> fourAttacheTwoPair = new ArrayList<Card>(); //
+	private List<Card> pairCard = new ArrayList<Card>();   //
+	private List<Card> tripple = new ArrayList<Card>();//
+	private List<Card> trippleOneSingle = new ArrayList<Card>();//
+	private List<Card> trippleOnePair = new ArrayList<Card>(); //
+	private List<Card> fourTwoSingle = new ArrayList<Card>(); //
+	private List<Card> fourTwoPairs = new ArrayList<Card>(); //
 	private List<Card> oneSingleLines = new ArrayList<Card>();
+	
+	//These two generated from pairCard, trippleOneSingle, trippleOnePair
 	private List<Card> twoSingleLines = new ArrayList<Card>();
-	*/
+	private List<Card> trippleSingleLines = new ArrayList<Card>();
+	
 	
 	
 	private boolean play;// 
@@ -164,6 +169,14 @@ public class Player {
 		return this.cards.get(index);
 	}
 
+	public void printCardModel()
+	{
+		System.out.println("my card model:");
+		for(CardModel cardmodel : cardModel)
+			System.out.println(cardmodel + " ");
+
+	}
+	
 	public int getCardIndex(int index) {
 		return this.cards.get(index).getCardIndex();
 	}
@@ -183,7 +196,6 @@ public class Player {
 
 	public int calcTotalPower()
 	{
-		//Optional operation.
 		/*
 		int[] value = {3, 3, 6, 7, 7, 8, 8, 9, 10, 10, 12, 14, 14, 15, 15, 16, 17};
 		cards = new ArrayList<Card>();
@@ -192,7 +204,6 @@ public class Player {
 			cards.add(new Card("", v));
 		}
 		*/
-		//End
 
 		sort();
 
@@ -218,7 +229,37 @@ public class Player {
 			else if(curCard < cardLineIndex )
 			{
 				repeatCount++;
-				System.out.println("We have " + repeatCount + " count " + cards.get(i));
+				
+				switch(repeatCount)
+				{
+					case 2:
+						List<Card> temp2 = new ArrayList<Card>();
+						temp2.add(cards.get(i));
+						temp2.add(cards.get(i-1));
+						cardModel.add(new CardModel(CardModel.Type.PAIR, temp2));
+						break;
+					
+					case 3:
+						List<Card> temp3 = new ArrayList<Card>();
+						temp3.add(cards.get(i));
+						temp3.add(cards.get(i-1));
+						temp3.add(cards.get(i-2));
+						cardModel.add(new CardModel(CardModel.Type.TRIPPLE, temp3));
+						break;
+					
+					case 4:
+						List<Card> temp4 = new ArrayList<Card>();
+						temp4.add(cards.get(i));
+						temp4.add(cards.get(i-1));
+						temp4.add(cards.get(i-2));
+						temp4.add(cards.get(i-3));
+						cardModel.add(new CardModel(CardModel.Type.FOURBOMB, temp4));
+						break;
+					default:
+						//Error here.
+			
+				}		
+				//System.out.println("We have " + repeatCount + " count " + cards.get(i));
 			}
 			else if(curCard > cardLineIndex)
 			{

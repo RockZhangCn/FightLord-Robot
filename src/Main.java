@@ -113,6 +113,7 @@ public class Main
 
 		System.out.println("Left User");
 		playerLeft.calcTotalPower();
+		playerLeft.printCardModel();
 		System.out.println("Middle User");
 		playerMyself.calcTotalPower();
 		System.out.println("Right User");
