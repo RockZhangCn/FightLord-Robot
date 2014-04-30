@@ -8,3 +8,7 @@ Card.class: Card.java
 	javac Card.java
 CardModel.class: CardModel.java
 	javac CardModel.java
+
+
+clean: 
+	rm *.class

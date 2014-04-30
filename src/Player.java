@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public class Player {
-	private final static String TAG = Player.class.getSimpleName();
+	//private final static String TAG = Player.class.getSimpleName();
 	public enum PlayerPosition {Left, Middle, Right };
 
 	private PlayerPosition sitPosition;//
@@ -19,6 +19,7 @@ public class Player {
 	
 	private List<CardModel> cardModel = new ArrayList<CardModel>();
 	
+	/*
 	private List<Card> singleCard = new ArrayList<Card>();  //     
 	private List<Card> pairCard = new ArrayList<Card>();   //
 	private List<Card> tripple = new ArrayList<Card>();//
@@ -31,7 +32,7 @@ public class Player {
 	//These two generated from pairCard, trippleOneSingle, trippleOnePair
 	private List<Card> twoSingleLines = new ArrayList<Card>();
 	private List<Card> trippleSingleLines = new ArrayList<Card>();
-	
+	*/
 	
 	
 	private boolean play;// 
@@ -61,28 +62,7 @@ public class Player {
 	{
 		for(Card card : cards)
 		{	
-			if(card.getCardIndex() == 11)
-				System.out.print("J" + " ");
-			
-			else if(card.getCardIndex() == 12)
-				System.out.print("Q" + " ");
-			
-			else if(card.getCardIndex() == 13)
-				System.out.print("K" + " ");
-			
-			else if(card.getCardIndex() == 14)
-				System.out.print("A" + " ");
-			
-			else if(card.getCardIndex() == 15)
-				System.out.print("2" + " ");
-
-			else if(card.getCardIndex() == 16)
-				System.out.print("xw" + " ");
-
-			else if(card.getCardIndex() == 17)
-				System.out.print("dw" + " ");
-
-			else System.out.print(card.getCardIndex() + " ");
+			System.out.print(card + " ");
 		}
 
 		System.out.println("");
@@ -171,6 +151,7 @@ public class Player {
 
 	public void printCardModel()
 	{
+		Collections.sort(cardModel);
 		System.out.println("my card model:");
 		for(CardModel cardmodel : cardModel)
 			System.out.println(cardmodel + " ");
@@ -197,14 +178,15 @@ public class Player {
 	public int calcTotalPower()
 	{
 		/*
-		int[] value = {3, 3, 6, 7, 7, 8, 8, 9, 10, 10, 12, 14, 14, 15, 15, 16, 17};
+		int[] value = {3, 3, 6, 7, 7, 7, 8, 9, 10, 14, 14, 14, 14, 15, 15, 16, 17};
 		cards = new ArrayList<Card>();
 		for( int v : value)
 		{
 			cards.add(new Card("", v));
 		}
 		*/
-
+		
+		
 		sort();
 
 		printAllCards();
@@ -265,9 +247,6 @@ public class Player {
 			else if(curCard < cardLineIndex )
 			{
 				repeatCount++;
-				
-				
-				//System.out.println("We have " + repeatCount + " count " + cards.get(i));
 			}
 			else if(curCard > cardLineIndex)
 			{

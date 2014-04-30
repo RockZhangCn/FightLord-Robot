@@ -18,35 +18,47 @@ public class Main
 		initData();
 		handCards();
     }
+    
 
+    //A --- Red Square.
+    //B --- Red Peach
+    //C --- Black Flower
+    //D --- Black Peach
     public static void initCard() {
 
 		// A 2
-		cards[0] = new Card("c1", 14);
-		cards[1] = new Card("c2", 14);
-		cards[2] = new Card("c3", 14);
-		cards[3] = new Card("c4", 14);
+		cards[0] = new Card("A14", 14);
+		cards[1] = new Card("B14", 14);
+		cards[2] = new Card("C14", 14);
+		cards[3] = new Card("D14", 14);
 
-		cards[4] = new Card("c5", 15);
-		cards[5] = new Card("c6", 15);
-		cards[6] = new Card("c7", 15);
-		cards[7] = new Card("c8", 15);
+		cards[4] = new Card("A15", 15);
+		cards[5] = new Card("B15", 15);
+		cards[6] = new Card("C15", 15);
+		cards[7] = new Card("D15", 15);
 
-	
+	    // 3 --- K
 		for (int i = 2; i < 13; i++) {
 			for (int j = 0; j < 4; j++) {
-				if (j < 2) {
-					cards[i * 4 + j] = new Card("c" + (4 * i + j + 1), i + 1);
-				} else {
-					cards[i * 4 + j] = new Card("c" + (4 * i + j + 1), i + 1);
+				switch(j)
+				{
+				case 0:
+					cards[i * 4 + j] = new Card("A" + (i > 9 ? "" :"0" ) + (i + 1), i + 1);
+					break;
+				case 1:
+					cards[i * 4 + j] = new Card("B" + (i > 9 ? "" :"0" ) + (i + 1), i + 1);
+					break;
+				case 2:
+					cards[i * 4 + j] = new Card("C" + (i > 9 ? "" :"0" ) + (i + 1), i + 1);
+					break;
+				case 3:
+					cards[i * 4 + j] = new Card("D" + (i > 9 ? "" :"0" ) + (i + 1), i + 1);
 				}
 			}
 		}
 
-		
 		cards[52] = new Card("c" + 53, 16);
 		cards[53] = new Card("c" + 54, 17);
-
 	}
 
 
@@ -63,15 +75,12 @@ public class Main
 	}
 
 	public static void initData() {
-
 		playerLeft.init();
 		playerMyself.init();
 		playerRight.init();
 		dizhuList.clear();
-
-
+		
 		initCard();
-
 		washCards();
 	}
 
@@ -98,7 +107,6 @@ public class Main
 				break;
 			case 1:
 				playerMyself.addCards(cards[i]);
-
 				break;
 			case 2:
 				playerRight.addCards(cards[i]);
@@ -111,14 +119,17 @@ public class Main
 		playerRight.sort();
 	
 
+		
 		System.out.println("Left User");
 		playerLeft.calcTotalPower();
 		playerLeft.printCardModel();
 		
+		System.out.println("====================================");
 		System.out.println("Middle User");
 		playerMyself.calcTotalPower();
 		playerMyself.printCardModel();
 		
+		System.out.println("====================================");
 		System.out.println("Right User");
 		playerRight.calcTotalPower();
 		playerRight.printCardModel();

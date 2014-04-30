@@ -1,8 +1,7 @@
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CardModel {
+public class CardModel implements Comparable<CardModel> {
 
 	public enum Type 
 	{  
@@ -20,8 +19,7 @@ public class CardModel {
 		public int value() 
 		{
 		    return this.value;
-		}
-	
+		}	
 	};
 
     private int cardCount;
@@ -39,6 +37,27 @@ public class CardModel {
 		cardCount = composeCards.size();
 		length = cardCount / type.value();
 		name = composeCards.get(0);
+		
+		setConflict();
+	}
+	
+	private void  setConflict()
+	{
+		for(Card c : composeCards)
+		{
+			if(type == Type.PAIR)
+				c.setConflictValue(1); //1 is defined in Card as final static int.
+			else if(type == Type.TRIPPLE)
+				c.setConflictValue(2);
+			else if(type == Type.FOURBOMB )
+				c.setConflictValue(4);
+			else if(type == Type.SINGLELINE)
+				c.setConflictValue(8);
+			else if(type == Type.PAIRLINE)
+				c.setConflictValue(16);
+			else if(type == Type.TRIPPLELINE)
+				c.setConflictValue(32);
+		}
 	}
 	
 	public Card getModelName() {
@@ -71,6 +90,14 @@ public class CardModel {
 	{
 		return type.value + " count " + name ;
 		
+	}
+	
+	@Override
+	public int compareTo(CardModel another) {
+		if( this.type.value - another.type.value != 0)
+			return this.type.value - another.type.value;
+		else
+			return this.name.getCardIndex() - another.name.getCardIndex();
 	}
 
 }

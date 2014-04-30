@@ -6,7 +6,27 @@ public class Card implements Comparable<Card> {
 	private String cid;//
 	private int cardIndex; //
 	private int powerValue; //
+	
+	//pair 1.  tripple  2  four 4  line 8. pairline 16
+	public final static int PAIR_CONFLICT = 1;
+	public final static int TRIPPLE_CONFLICT = 2;
+	public final static int BOMB_CONFLICT = 4;
+	public final static int SINGLINE_CONFLICT = 8;
+	public final static int PAIRLINE_CONFLICT = 16;
+	public final static int TRIPPLELINE_CONFLICT = 32;
+	
+	private int conflictValue = 0;
 
+	
+	public void setConflictValue(int confilict)
+	{
+		conflictValue |= confilict;
+	}
+	
+	public int getConflictValue()
+	{
+		return this.conflictValue;
+	}
 	
 	//UI related begin
 	// {
@@ -35,7 +55,8 @@ public class Card implements Comparable<Card> {
 	private boolean clicked = false;//
 	//UI related end.
 	// }
-	private String TAG;
+	
+	//private final static String TAG = Card.class.getSimpleName();
 
     Card(String cid, int cardIndex)
     {
@@ -47,18 +68,24 @@ public class Card implements Comparable<Card> {
     @Override
     public String toString()
     {
-    	if(cardIndex == 11)
-    		return "J";
-    	if(cardIndex == 12)
-    		return "Q";
-    	if(cardIndex == 13)
-    		return "K";
-    	if(cardIndex == 14)
-    		return "A";
-    	if(cardIndex == 15)
-    		return "2";
+    	String midStr = new Integer(cardIndex).toString();
     	
-    	return new Integer(cardIndex).toString();
+    	if(cardIndex == 11)
+    		midStr = "J";
+    	if(cardIndex == 12)
+    		midStr = "Q";
+    	if(cardIndex == 13)
+    		midStr = "K";
+    	if(cardIndex == 14)
+    		midStr = "A";
+    	if(cardIndex == 15)
+    		midStr = "2";
+    	if(cardIndex == 16)
+    		midStr = "xw";
+    	if(cardIndex == 17)
+    		midStr = "dw";
+    	
+    	return "[" + this.cid + "]" + midStr;
     }
 	
 	public int getPowerValue()
