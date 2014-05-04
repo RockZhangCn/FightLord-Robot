@@ -164,14 +164,14 @@ public class Player {
 	public int calcTotalPower()
 	{
 		/*
-		int[] value = {3, 3, 4, 4, 5, 5, 8, 9, 10, 11, 11, 13, 13, 14, 14, 16, 17};
+		int[] value = {3, 4, 4, 5, 6, 7, 8, 9, 10, 12, 12, 13, 13, 13, 14, 14, 14};
 		cards = new ArrayList<Card>();
 		for( int v : value)
 		{
 			cards.add(new Card("", v));
 		}
-		*/	
-		
+		*/
+
 		sortPlayerCards();
 		printAllCards();
 		
@@ -260,9 +260,12 @@ public class Player {
 		{
 			if(pairList.get(i) == startCardIndex)	
 			{
-				linelength++;
-				if(startCardIndex < 14)
+				
+				if(startCardIndex <= 14)
+				{
 					startCardIndex++;
+					linelength++;
+				}
 			}
 			else
 			{
@@ -375,6 +378,8 @@ public class Player {
 	{
 		switch(repeatCount)
 		{
+			case 1:
+				break;
 			case 2:
 				List<Card> temp2 = new ArrayList<Card>();
 				

@@ -64,7 +64,7 @@ public class Main
 
 	public static void washCards() {
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 300; i++) {
 			Random random = new Random();
 			int a = random.nextInt(54);
 			int b = random.nextInt(54);
