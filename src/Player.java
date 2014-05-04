@@ -19,23 +19,9 @@ public class Player {
 	
 	private List<CardModel> cardModelList = new ArrayList<CardModel>();
 	
-	/*
-	private List<Card> singleCard = new ArrayList<Card>();  //     
-	private List<Card> pairCard = new ArrayList<Card>();   //
-	private List<Card> tripple = new ArrayList<Card>();//
-	private List<Card> trippleOneSingle = new ArrayList<Card>();//
-	private List<Card> trippleOnePair = new ArrayList<Card>(); //
-	private List<Card> fourTwoSingle = new ArrayList<Card>(); //
-	private List<Card> fourTwoPairs = new ArrayList<Card>(); //
-	private List<Card> oneSingleLines = new ArrayList<Card>();
-	
-	//These two generated from pairCard, trippleOneSingle, trippleOnePair
-	private List<Card> twoSingleLines = new ArrayList<Card>();
-	private List<Card> trippleSingleLines = new ArrayList<Card>();
-	*/
-	
-	
 	private boolean play;// 
+
+
 
 	public Player(PlayerPosition pos, boolean person) {
 		this.sitPosition = pos;
@@ -178,13 +164,13 @@ public class Player {
 	public int calcTotalPower()
 	{
 		/*
-		int[] value = {3, 3, 6, 7, 7, 7, 8, 9, 10, 14, 14, 14, 14, 15, 15, 16, 17};
+		int[] value = {3, 3, 4, 4, 5, 5, 8, 9, 10, 11, 11, 13, 13, 14, 14, 16, 17};
 		cards = new ArrayList<Card>();
 		for( int v : value)
 		{
 			cards.add(new Card("", v));
 		}
-		*/
+		*/	
 		
 		sortPlayerCards();
 		printAllCards();
@@ -197,15 +183,16 @@ public class Player {
 		int repeatCount = 1;
 		
 		int i = 0;
-		for( i = 0;  i < cards.size() ; i++) // cards[7]
+		for( i = 0; i < cards.size(); i++) // cards[7]
 		{
 			curCard = getCardIndex(i);
 			if(curCard == lineIndexCard)
 			{
-				if(curCard <= 14)
+				if(curCard <= 14) //Disconnect after A.
 				{
 					currentLinelen++;
 				}
+				
 				lineIndexCard++;
 				//Before repeatCount is set to default value.
 				addRepeatModel(repeatCount, i);	
@@ -217,52 +204,150 @@ public class Player {
 			}
 			else if(curCard > lineIndexCard)
 			{
-				/*
-				if(currentLinelen >= 5)
-				{
-					System.out.println("We have lines lenth  = " + currentLinelen + ", line is :");
-
-					int cardValue = 3;
-					for(int j = 0; j < currentLinelen ; j++)
-					{
-						cardValue = realStartCard + j;	
-						System.out.print(new Card("", cardValue) + " " );
-					}
-					System.out.println("");
-				}
-				*/
-				
+				addRepeatModel(repeatCount, i);
 				addSingleLine(currentLinelen, realStartCard);
-
+				
 				realStartCard = curCard;
 				lineIndexCard = realStartCard + 1;
 				currentLinelen = 1;
-				
-				addRepeatModel(repeatCount, i);
-				
+
 				repeatCount = 1;
 			}
 		}
-
-		addRepeatModel(repeatCount, i);
-
-		addSingleLine(currentLinelen, realStartCard);
-		/*
-		if(currentLinelen >= 5)
-		{
-			System.out.println("We have lines lenth  = " + currentLinelen + ", line is :");
-
-			int cardValue = 3;
-			for(int j = 0; j < currentLinelen ; j++)
-			{
-				cardValue = realStartCard + j;	
-				System.out.print(new Card("", cardValue) + " " );
-			}
-			System.out.println("");
-		}
-		*/
 		
+		addRepeatModel(repeatCount, i);
+		addSingleLine(currentLinelen, realStartCard);
+
+		parseMultipleLine(2);
+		parseMultipleLine(3);
+		
+		addTopModel();
 		return 0;
+	}
+	
+	private void parseMultipleLine(int type)
+	{
+		if( type != 2 && type != 3)
+		{
+			System.out.println("Parameter Error with type " + type);
+			return;
+		}
+
+		final int LEN = 5 - type;
+		List<Integer> pairList = new ArrayList<Integer>();
+
+		for(CardModel cm : cardModelList)
+		{
+			if(   ((cm.getType() == CardModel.Type.PAIR) && type == 2)
+			|| cm.getType() == CardModel.Type.TRIPPLE
+			|| cm.getType() == CardModel.Type.FOURBOMB
+			)
+			{
+				pairList.add(new Integer(cm.getModelName().getCardIndex()));
+			}
+		}
+
+		int length = pairList.size();
+
+		if(length < LEN)
+			return;
+
+		Collections.sort(pairList);
+
+		int startCardIndex = pairList.get(0);
+		int linelength = 0;
+		for(int i = 0; i < length ; i++)
+		{
+			if(pairList.get(i) == startCardIndex)	
+			{
+				linelength++;
+				if(startCardIndex < 14)
+					startCardIndex++;
+			}
+			else
+			{
+				addMultipleLine(linelength, startCardIndex - linelength, type);
+
+				linelength = 1;
+				startCardIndex = pairList.get(i);
+				if(startCardIndex < 14)
+					startCardIndex ++;
+			}
+		}
+		
+		addMultipleLine(linelength, startCardIndex - linelength, type);
+
+	}
+	
+	private void addTopModel()
+	{
+		int size = cards.size();
+		if(cards.get(size - 1).getCardIndex() == 17 && cards.get(size - 2).getCardIndex() == 16)
+		{
+			List<Card> topcards = new ArrayList<Card>();
+			
+			topcards.add(cards.get(size - 1));
+			topcards.add(cards.get(size - 2));
+			
+			cardModelList.add(new CardModel(CardModel.Type.TOPBOMB, topcards));
+		}
+	}
+	
+	private void addMultipleLine(int lineLength, int startCard, int unit)
+	{
+		int leastLength = 0;
+		switch(unit)
+		{
+			case 1:
+				leastLength = 5;
+				break;
+				
+			case 2:
+				leastLength = 3;
+				break;
+				
+			case 3:
+				leastLength = 2;
+				break;
+			default:
+				System.out.println("Parameter error");
+		}
+		
+		if(lineLength < leastLength)
+			return;
+		
+		List<Card> multipleLine = new ArrayList<Card>();
+		int len = cards.size();
+		for(int i = 0; i < len; i++)
+		{
+			if((cards.get(i).getCardIndex() == startCard )&& lineLength > 0)
+			{
+				for(int j = 0; j < unit; j++)
+					multipleLine.add(cards.get(i + j));
+				
+				i += unit -1;
+				startCard++;
+				lineLength--;
+			}
+		}
+		
+		switch(unit)
+		{
+			case 1:
+				cardModelList.add(new CardModel(CardModel.Type.SINGLELINE, multipleLine));
+				break;
+				
+			case 2:
+				cardModelList.add(new CardModel(CardModel.Type.PAIRLINE, multipleLine));
+				break;
+				
+			case 3:
+				cardModelList.add(new CardModel(CardModel.Type.TRIPPLELINE, multipleLine));
+				break;
+			default:
+				System.out.println("Parameter error");
+		}
+		
 	}
 	
 	public void addSingleLine(int lineLength, int startCard)
@@ -286,8 +371,6 @@ public class Player {
 		cardModelList.add(new CardModel(CardModel.Type.SINGLELINE, singleLine));
 	}
 	
-	
-	
 	public void addRepeatModel(int repeatCount, int endIndex)
 	{
 		switch(repeatCount)
@@ -302,6 +385,7 @@ public class Player {
 				temp2.add(cards.get(endIndex-2));
 				
 				cardModelList.add(new CardModel(CardModel.Type.PAIR, temp2));
+
 				break;
 			
 			case 3:
@@ -333,10 +417,11 @@ public class Player {
 				temp4.add(cards.get(endIndex-4));
 				
 				cardModelList.add(new CardModel(CardModel.Type.FOURBOMB, temp4));
+				
 				break;
 			default:
+				System.out.println("Parse cards error");
 				//Error here.
-	
 		}	
 	}
 }

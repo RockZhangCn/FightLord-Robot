@@ -79,6 +79,7 @@ public class CardModel implements Comparable<CardModel> {
 	public void setType(Type type)
 	{
 		this.type = type;
+		setConflict();
 	}
 
 	public List<Card> getComposeCards() {
