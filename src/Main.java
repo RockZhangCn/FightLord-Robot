@@ -57,8 +57,8 @@ public class Main
 			}
 		}
 
-		cards[52] = new Card("c" + 53, 16);
-		cards[53] = new Card("c" + 54, 17);
+		cards[52] = new Card("c" + 16, 16);
+		cards[53] = new Card("c" + 17, 17);
 	}
 
 
@@ -78,6 +78,7 @@ public class Main
 		playerLeft.init();
 		playerMyself.init();
 		playerRight.init();
+		
 		dizhuList.clear();
 		
 		initCard();
@@ -114,12 +115,14 @@ public class Main
 			}
 		}
 
-		playerLeft.sort();
-		playerMyself.sort();
-		playerRight.sort();
+		playerLeft.sortPlayerCards();
+		playerMyself.sortPlayerCards();
+		playerRight.sortPlayerCards();
 	
+		for(Card c : dizhuList)
+			System.out.print( c + " ");
 
-		
+		System.out.println("\n====================================");
 		System.out.println("Left User");
 		playerLeft.calcTotalPower();
 		playerLeft.printCardModel();

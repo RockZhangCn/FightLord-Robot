@@ -85,7 +85,8 @@ public class Card implements Comparable<Card> {
     	if(cardIndex == 17)
     		midStr = "dw";
     	
-    	return "[" + this.cid + "]" + midStr;
+    	return //"[" + this.cid + "]" +
+    	       midStr;
     }
 	
 	public int getPowerValue()

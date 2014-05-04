@@ -46,17 +46,17 @@ public class CardModel implements Comparable<CardModel> {
 		for(Card c : composeCards)
 		{
 			if(type == Type.PAIR)
-				c.setConflictValue(1); //1 is defined in Card as final static int.
+				c.setConflictValue(Card.PAIR_CONFLICT); //1 is defined in Card as final static int.
 			else if(type == Type.TRIPPLE)
-				c.setConflictValue(2);
+				c.setConflictValue(Card.TRIPPLE_CONFLICT);
 			else if(type == Type.FOURBOMB )
-				c.setConflictValue(4);
+				c.setConflictValue(Card.BOMB_CONFLICT);
 			else if(type == Type.SINGLELINE)
-				c.setConflictValue(8);
+				c.setConflictValue(Card.SINGLINE_CONFLICT);
 			else if(type == Type.PAIRLINE)
-				c.setConflictValue(16);
+				c.setConflictValue(Card.PAIRLINE_CONFLICT);
 			else if(type == Type.TRIPPLELINE)
-				c.setConflictValue(32);
+				c.setConflictValue(Card.TRIPPLELINE_CONFLICT);
 		}
 	}
 	
@@ -88,7 +88,13 @@ public class CardModel implements Comparable<CardModel> {
 	@Override
 	public String toString()
 	{
-		return type.value + " count " + name ;
+		StringBuilder string = new StringBuilder();
+		string.append(this.type + " ");
+		
+		for( Card c : this.composeCards)
+			string.append(c + " ");
+		
+		return string.toString();
 		
 	}
 	
